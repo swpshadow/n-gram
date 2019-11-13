@@ -73,7 +73,7 @@ def build_dict(text, n):
         count +=1
 
 #gets probability of l_word given preceding words in the list_texts
-def word_preceding_prob(list_texts, l_word, preceding, length = 10):
+def word_preceding_prob(list_texts, l_word, preceding):
     assert preceding
     l_freq = 0
     prec_freq = 0
@@ -85,12 +85,13 @@ def word_preceding_prob(list_texts, l_word, preceding, length = 10):
             if text[i] == l_word:
                 l_freq += 1
                 if str(text[i - len(preceding):i] ) == str( preceding ):
-                    #print(str(text[i - len(preceding):i] ), str( preceding ))
+                    print(str(text[i - len(preceding):i] ), str( preceding ))
                     prec_freq +=1
     if l_freq == 0:
-        return 0.1
+        return 1/(length + 0.001*length)
     elif prec_freq == 0:
         return l_freq / length
+    
     return prec_freq / l_freq
 
 #probability that text is either from pos or neg
@@ -117,7 +118,7 @@ def char_preceding_prob(list_texts, l_letter, preceding):
                 if text[i - len(preceding):i] == preceding:
                     prec_freq +=1
     if l_frequency == 0 or prec_freq == 0:
-        return 0.01
+        return 0.001
     return prec_freq / l_frequency
 
 #uses characters to determine probability of text being from
@@ -144,9 +145,7 @@ def get_one_text():
     test_neg = [x[0].lower().translate(tr) for x in test if x[1] =='0']
 
     text = [(x[:-3],x[-1] ) for x in fil ]
-    
     pos_text = [x[0].lower().translate(tr) for x in text if x[1] == '1']
-
     neg_text = [x[0].lower().translate(tr) for x in text if x[1] == '0']
 
     return pos_text, neg_text, test_pos, test_neg
@@ -157,34 +156,38 @@ def get_two_text():
     s = open('.\\imdb_labelled.txt')
     fil = s.read().splitlines()
 
-    in_file = fil[:int((9/10) *len(fil))]
-    test_file = fil[int((9/10) *len(fil)):]
+    in_file = fil[:-10]
+    test_file = fil[-10:]
     test1 = [x.lower().translate(tr)[:-3] for x in test_file]
 
     text1 = [x.lower().translate(tr)[:-3] for x in in_file]
 
     s = open('.\\amazon_cells_labelled.txt')
     fil = s.read().splitlines()
-    in_file = fil[:int((9/10) *len(fil))]
-    test_file = fil[int((9/10) *len(fil)):]
-    test2 = [x.lower().translate(tr)[:-3] for x in test_file]
+    in_file = fil[:-10]
+    test_file = fil[-10:]
+    test2 = [x.lower().translate(tr)[:-2] for x in test_file]
 
-    text2 = [x.lower().translate(tr)[:-3] for x in in_file]
+    text2 = [x.lower().translate(tr)[:-2] for x in in_file]
 
     return text1, text2, test1, test2
 
 if __name__ == '__main__':
-    
+    n = 2
     lang1, lang2, test1, test2 = get_two_text()
     # print(char_lang_prob(test1[0], lang1, lang2, n = 3))
     result = [0,0]
     c_result = [0,0]
     leng = len(test2)
+    print(leng)
     for word in test2:
-        res = word_lang_prob(word.split(), lang1, lang2, n = 3)
-        c = char_lang_prob(word, lang1, lang2, n = 3)
-        c_result[0], c_result[1] = c_result[0] + c[0], c_result[1] + c[1]
-        result[0], result[1] = result[0] + res[0], result[1] + res[1]
+        print(word)
+        res = word_lang_prob(word.split(), lang1, lang2, n = n)
+        c = char_lang_prob(word, lang1, lang2, n = n)
+        c_result[0] +=c[0]
+        c_result[1] += c[1]
+        result[0] += res[0]
+        result[1] += res[1]
     print('word: ' ,result[0]/leng, result[1]/leng)
     print('char: ', c_result[0]/leng, c_result[1]/leng) 
 
