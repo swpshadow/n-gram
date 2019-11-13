@@ -1,3 +1,8 @@
+
+
+## Below is the readme for the data sets used:
+
+
 This dataset was created for the Paper 'From Group to Individual Labels using Deep Features', Kotzias et. al,. KDD 2015
 Please cite the paper if you want to use it :)
 
