@@ -1,4 +1,4 @@
-
+Program reads in the data set and uses an n-gram algorithm to determine probability that an input sentence belongs to one of the given datasets
 
 ## Below is the readme for the data sets used:
 
