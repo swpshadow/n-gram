@@ -1,5 +1,12 @@
 Program reads in the data set and uses an n-gram algorithm to determine probability that an input sentence belongs to one of the given datasets
 
+If simply run, program uses a set of data from imdp and a set of data from amazon, and tests with a subset of the data set from amazon. 
+Uses n = 3 for character n-gram and word n-gram and the probabilities of the text belonging to imdb is printed first, with amazon second. 
+Output should be formatted as follows:
+word:  0.1 0.9
+char:  0.3 0.7
+where .1 is probability text belongs to imdb and .9 it belongs to amazon using n-gram on words, and the char: row is the result of the character n-gram for imdb and amazon respectively.
+
 ## Below is the readme for the data sets used:
 
 
